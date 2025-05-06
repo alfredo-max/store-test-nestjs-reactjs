@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Product } from "../models/Product";
 import Modal from "./Modal";
-import UserInfoForm from "./forms/UserInfoForm";
+import { useDispatch } from "react-redux";
+import { resetPaymentData } from "../../payments/redux/paymentSlice";
+import { UserInfoForm } from "./forms/UserInfoForm";
 import CardPaymentForm from "./forms/CardPaymentForm";
 
 interface ProductCardProps {
@@ -11,7 +13,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStep, setModalStep] = useState(1);
-  
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -36,7 +38,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       <Modal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            dispatch(resetPaymentData());
+          }}
           title="Confirmar compra"
         >
           {modalStep === 1 ? (

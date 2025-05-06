@@ -1,58 +1,50 @@
-import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { FaCcVisa, FaCcMastercard, FaCcAmex, FaArrowLeft } from "react-icons/fa";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../app/store";
 
 interface Props {
   onBack: () => void;
 }
 
-const CardPaymentForm: React.FC<Props> = ({ onBack }) => {
-  const [cardNumber, setCardNumber] = useState("");
-  const [expMonth, setExpMonth] = useState("");
-  const [expYear, setExpYear] = useState("");
-  const [cvc, setCvc] = useState("");
-  const [nameOnCard, setNameOnCard] = useState("");
-  const [idType, setIdType] = useState("");
-  const [idNumber, setIdNumber] = useState("");
-  const [installments, setInstallments] = useState("1");
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [error, setError] = useState("");
+interface CardFormData {
+  cardNumber: string;
+  expMonth: string;
+  expYear: string;
+  cvc: string;
+  nameOnCard: string;
+  idType: string;
+  idNumber: string;
+  installments: string;
+  acceptedTerms: boolean;
+  acceptedDataPolicy: boolean;
+}
 
-  const handlePay = () => {
-    if (
-      !cardNumber ||
-      !expMonth ||
-      !expYear ||
-      !cvc ||
-      !nameOnCard ||
-      !idType ||
-      !idNumber ||
-      !acceptedTerms
-    ) {
-      setError("Por favor, completa todos los campos y acepta los términos.");
-      return;
+
+const CardPaymentForm: React.FC<Props> = ({ onBack }) => {
+  const userInfo = useSelector((state: RootState) => state.payment.userInfo);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<CardFormData>();
+
+  const acceptedTerms = watch("acceptedTerms");
+
+  const onSubmit = (data: CardFormData) => {
+    if (!acceptedTerms) {
+      return alert("Debes aceptar los términos y condiciones");
     }
-    setError("");
+    console.log("Información del usuario:", userInfo);
+    console.log("Formulario:", data);
     alert("Pago procesado correctamente ✅");
   };
 
-  useEffect(() => {
-    if (
-      cardNumber &&
-      expMonth &&
-      expYear &&
-      cvc &&
-      nameOnCard &&
-      idType &&
-      idNumber &&
-      acceptedTerms
-    ) {
-      setError("");
-    }
-  }, [cardNumber, expMonth, expYear, cvc, nameOnCard, idType, idNumber, acceptedTerms]);
-
   return (
-    <form className="space-y-6 text-sm text-gray-800">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-sm text-gray-800">
       <div className="flex items-center gap-2">
         <FaArrowLeft className="text-yellow-400 cursor-pointer" onClick={onBack} />
         <span className="text-black">💳</span> Paga con tu tarjeta
@@ -63,7 +55,6 @@ const CardPaymentForm: React.FC<Props> = ({ onBack }) => {
         <div className="flex items-center gap-4">
           <FaCcMastercard className="text-3xl text-red-600" />
           <FaCcVisa className="text-3xl text-blue-700" />
-          <FaCcAmex className="text-3xl text-blue-500" />
         </div>
       </div>
 
@@ -71,20 +62,24 @@ const CardPaymentForm: React.FC<Props> = ({ onBack }) => {
         <label className="block mb-1 text-gray-600">Número de la tarjeta</label>
         <input
           type="text"
-          value={cardNumber}
-          onChange={(e) => setCardNumber(e.target.value)}
+          {...register("cardNumber", {
+            required: "El número es obligatorio",
+            minLength: { value: 16, message: "Debe tener al menos 16 dígitos" },
+            maxLength: { value: 19, message: "Máximo 19 dígitos" },
+            pattern: { value: /^\d+$/, message: "Solo se permiten números" },
+          })}
           placeholder="•••• •••• •••• ••••"
-          className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
         />
+         {errors.cardNumber && <p className="text-red-500 text-xs mt-1">{errors.cardNumber.message}</p>}
       </div>
 
       <div className="flex gap-4">
-        <div className="flex-2">
+        <div className="flex-2 w-2/3">
           <label className="block mb-1 text-gray-600">Expira el</label>
           <div className="flex gap-2">
             <select
-              value={expMonth}
-              onChange={(e) => setExpMonth(e.target.value)}
+              {...register("expMonth", { required: "El mes es obligatorio" })}
               className="w-1/2 px-3 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
             >
               <option value="">Mes</option>
@@ -95,33 +90,31 @@ const CardPaymentForm: React.FC<Props> = ({ onBack }) => {
               ))}
             </select>
             <select
-              value={expYear}
-              onChange={(e) => setExpYear(e.target.value)}
+              {...register("expYear", { required: "El año es obligatorio" })}
               className="w-1/2 px-3 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
             >
               <option value="">Año</option>
               {[...Array(10)].map((_, i) => {
                 const year = new Date().getFullYear() + i;
-                return (
-                  <option key={i} value={year}>{year}</option>
-                );
+                return <option key={i} value={year}>{year}</option>;
               })}
             </select>
           </div>
+          {errors.expYear && <p className="text-red-500 text-xs mt-1">{errors.expYear.message}</p>}
+          {errors.expMonth && <p className="text-red-500 text-xs mt-1">{errors.expMonth.message}</p>}
         </div>
 
         <div className="flex-1">
           <label className="block mb-1 text-gray-600 flex items-center gap-1">
-            CVC
-            <IoMdInformationCircleOutline className="text-gray-500" />
+            CVC <IoMdInformationCircleOutline className="text-gray-500" />
           </label>
           <input
             type="text"
-            value={cvc}
-            onChange={(e) => setCvc(e.target.value)}
+            {...register("cvc", { required: "El CVC es obligatorio" })}
             placeholder="123"
             className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
           />
+          {errors.cvc && <p className="text-red-500 text-xs mt-1">{errors.cvc.message}</p>}
         </div>
       </div>
 
@@ -129,41 +122,40 @@ const CardPaymentForm: React.FC<Props> = ({ onBack }) => {
         <label className="block mb-1 text-gray-600">Nombre en la tarjeta</label>
         <input
           type="text"
-          value={nameOnCard}
-          onChange={(e) => setNameOnCard(e.target.value)}
+          {...register("nameOnCard", { required: "El nombre es obligatorio" })}
           placeholder="Como aparece en la tarjeta"
           className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
         />
+        {errors.nameOnCard && <p className="text-red-500 text-xs mt-1">{errors.nameOnCard.message}</p>}
       </div>
 
       <div>
         <label className="block mb-1 text-gray-600">Identificación del tarjetahabiente</label>
         <div className="flex gap-2">
           <select
-            value={idType}
-            onChange={(e) => setIdType(e.target.value)}
+            {...register("idType", { required: "El tipo de documento es obligatorio" })}
             className="w-1/3 px-3 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
           >
             <option value="">Tipo</option>
-            <option>CC</option>
-            <option>CE</option>
-            <option>TI</option>
+            <option value="CC">CC</option>
+            <option value="CE">CE</option>
+            <option value="TI">TI</option>
           </select>
           <input
             type="text"
-            value={idNumber}
-            onChange={(e) => setIdNumber(e.target.value)}
+            {...register("idNumber", { required: "El número de documento es obligatorio" })}
             placeholder="Ingresa tu documento"
             className="w-2/3 px-4 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
           />
         </div>
+        {errors.idType && <p className="text-red-500 text-xs mt-1">{errors.idType.message}</p>}
+        {errors.idNumber && <p className="text-red-500 text-xs mt-1">{errors.idNumber.message}</p>}
       </div>
 
       <div>
         <label className="block mb-1 text-gray-600">Número de cuotas</label>
         <select
-          value={installments}
-          onChange={(e) => setInstallments(e.target.value)}
+          {...register("installments")}
           className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
         >
           <option value="1">1</option>
@@ -175,18 +167,33 @@ const CardPaymentForm: React.FC<Props> = ({ onBack }) => {
       <div className="flex items-start gap-2">
         <input
           type="checkbox"
-          checked={acceptedTerms}
-          onChange={(e) => setAcceptedTerms(e.target.checked)}
+          {...register("acceptedTerms", { required: "Debe aceptar los terminos de politica de privacidad" })}
           className="mt-1"
         />
         <label className="text-sm text-gray-600">
           Acepto haber leído los{" "}
-          <span className="font-semibold underline">términos y condiciones</span> y la{" "}
-          <span className="font-semibold underline">política de privacidad</span> para hacer este pago.
+          <span className="font-semibold underline">reglamentos</span> y la{" "}
+          <span className="font-semibold underline">política de privacidad</span>.
         </label>
       </div>
 
-      {error && (
+      <div className="flex items-start gap-2">
+        <input
+          type="checkbox"
+          {...register("acceptedDataPolicy", { required: "Debe aceptar la política de datos personales" })}
+          className="mt-1"
+        />
+        <label className="text-sm text-gray-600">
+          Acepto la{" "}
+          <span className="font-semibold underline">
+            autorización para la administración de datos personales
+          </span>.
+        </label>
+      </div>
+      {errors.acceptedTerms && <p className="text-red-500 text-xs mt-1">{errors.acceptedTerms.message}</p>}
+      {errors.acceptedDataPolicy && <p className="text-red-500 text-xs mt-1">{errors.acceptedDataPolicy.message}</p>}
+      
+      {Object.keys(errors).length > 0 && (
         <div className="flex items-center gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-md text-sm">
           <svg
             className="w-4 h-4 text-red-500"
@@ -201,13 +208,12 @@ const CardPaymentForm: React.FC<Props> = ({ onBack }) => {
               d="M12 8v4m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
             />
           </svg>
-          {error}
+          Por favor, verifique los datos ingresados.
         </div>
       )}
 
       <button
-        type="button"
-        onClick={handlePay}
+        type="submit"
         className="w-full bg-black text-white py-3 rounded-full flex justify-center items-center gap-2 hover:bg-gray-900 transition"
       >
         💰 Pagar

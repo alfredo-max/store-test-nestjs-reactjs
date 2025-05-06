@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import ProductCard from './ProductCard';
-import { AppDispatch, RootState } from '../../../app/srore';
+import { AppDispatch, RootState } from '../../../app/store';
 import { fetchProducts } from '../../redux/thunks/productsThunk';
 import { useDispatch, useSelector } from 'react-redux';
 

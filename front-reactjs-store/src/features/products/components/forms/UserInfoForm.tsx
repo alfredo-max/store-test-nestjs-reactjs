@@ -1,37 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
 import { RiSecurePaymentFill } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../../../payments/redux/paymentSlice";
 
 interface Props {
   onContinue: () => void;
   onBack: () => void;
 }
 
-const UserInfoForm: React.FC<Props> = ({ onContinue, onBack }) => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [error, setError] = useState("");
+type FormData = {
+  email: string;
+  name: string;
+  phone: string;
+};
 
-  useEffect(() => {
-    if (email && name && phone) {
-      setError("");
-    }
-  }, [email, name, phone]);
+export const UserInfoForm: React.FC<Props> = ({ onContinue, onBack }) => {
+  const { register, handleSubmit, formState: { errors }} = useForm<FormData>();
+  const dispatch = useDispatch();
 
-  const handleContinue = () => {
-    if (!email || !name || !phone) {
-      setError("Por favor, completa todos los campos.");
-      return;
-    }
-    setError("");
+  const onSubmit = (data: FormData) => {
+    dispatch(setUserInfo(data));
     onContinue();
   };
 
   return (
-    <form className="space-y-6 text-sm text-gray-800">
+    <form className="space-y-6 text-sm text-gray-800" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-center gap-2">
-        <FaArrowLeft className="text-yellow-400" onClick={onBack}/>
+        <FaArrowLeft className="text-yellow-400 cursor-pointer" onClick={onBack} />
         <h2 className="text-lg font-semibold text-black">Ingresa tus datos</h2>
       </div>
 
@@ -39,22 +36,22 @@ const UserInfoForm: React.FC<Props> = ({ onContinue, onBack }) => {
         <label className="block mb-1 text-gray-600">Correo electrónico</label>
         <input
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          {...register("email", { required: "El correo es obligatorio" })}
           placeholder="correo@ejemplo.com"
           className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
         />
+        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
       </div>
 
       <div>
         <label className="block mb-1 text-gray-600">Nombres y Apellidos</label>
         <input
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          {...register("name", { required: "El nombre es obligatorio" })}
           placeholder="Nombre completo"
           className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
         />
+        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
       </div>
 
       <div>
@@ -70,36 +67,16 @@ const UserInfoForm: React.FC<Props> = ({ onContinue, onBack }) => {
           </span>
           <input
             type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            {...register("phone", { required: "El número es obligatorio" })}
             placeholder="3001234567"
             className="flex-1 px-4 py-2 focus:outline-none"
           />
         </div>
+        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
       </div>
 
-      {error && (
-        <div className="flex items-center gap-2 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-md text-sm">
-          <svg
-            className="w-4 h-4 text-red-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
-            />
-          </svg>
-          {error}
-        </div>
-      )}
-
       <button
-        type="button"
-        onClick={handleContinue}
+        type="submit"
         className="w-full bg-black text-white py-3 rounded-full flex justify-center items-center gap-2 hover:bg-gray-900 transition"
       >
         <span role="img" aria-label="lock"><RiSecurePaymentFill /></span> Continuar con tu pago
@@ -107,5 +84,3 @@ const UserInfoForm: React.FC<Props> = ({ onContinue, onBack }) => {
     </form>
   );
 };
-
-export default UserInfoForm;

@@ -37,7 +37,6 @@ import { ProductEntity } from './modules/producto/infrastructure/adapters/outbou
       },
     }),
     ProductoModule,
-    ClienteModule,
   ],
   controllers: [AppController],
 })
