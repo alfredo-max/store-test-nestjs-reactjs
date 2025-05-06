@@ -1,4 +1,4 @@
 export const API_ENDPOINTS = {
-    PRODUCTS: '/productos',
+    PRODUCTS: '/products',
     CUSTOMERS: '/clientes'
   };
