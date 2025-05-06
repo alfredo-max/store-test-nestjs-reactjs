@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductoModule } from './modules/producto/producto.module';
-import { ClienteModule } from './modules/cliente/cliente.module';
 import { AppController } from './app.controller';
 import configuration from './config/configuration';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductEntity } from './modules/producto/infrastructure/adapters/outbound/persistence/entities/product.entity';
+import { TransactionsModule } from './modules/transactions/transactions.module';
 
 @Module({
   imports: [
@@ -37,6 +37,7 @@ import { ProductEntity } from './modules/producto/infrastructure/adapters/outbou
       },
     }),
     ProductoModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
 })
