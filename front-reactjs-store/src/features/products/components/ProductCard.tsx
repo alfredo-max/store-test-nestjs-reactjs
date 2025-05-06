@@ -38,12 +38,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </button>
       </div>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Confirmar compra">
-        {modalStep === 1 ? (
-          <UserInfoForm onContinue={() => setModalStep(2)} />
-        ) : (
-          <CardPaymentForm onBack={() => setModalStep(1)} />
-        )}
+      <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Confirmar compra"
+        >
+          {modalStep === 1 ? (
+             <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto scrollbar-none">
+                <UserInfoForm onContinue={() => setModalStep(2)} />
+             </div>
+          ) : (
+            <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto">
+              <CardPaymentForm onBack={() => setModalStep(1)} />
+            </div>
+          )}
       </Modal>
     </>
   );
