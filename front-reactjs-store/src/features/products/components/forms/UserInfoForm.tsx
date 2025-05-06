@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
 import { RiSecurePaymentFill } from "react-icons/ri";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../../../payments/redux/paymentSlice";
+import { RootState } from "../../../../app/store";
 
 interface Props {
   onContinue: () => void;
@@ -17,9 +18,18 @@ type FormData = {
 };
 
 export const UserInfoForm: React.FC<Props> = ({ onContinue, onBack }) => {
-  const { register, handleSubmit, formState: { errors }} = useForm<FormData>();
+  const { register, handleSubmit, setValue, formState: { errors }} = useForm<FormData>();
+  const userInfo = useSelector((state: RootState) => state.payment.userInfo);
   const dispatch = useDispatch();
-
+  
+  useEffect(() => {
+    if (userInfo) {
+      setValue("email", userInfo.email);
+      setValue("name", userInfo.name);
+      setValue("phone", userInfo.phone);
+    }
+  }, [userInfo, setValue]);
+  
   const onSubmit = (data: FormData) => {
     dispatch(setUserInfo(data));
     onContinue();

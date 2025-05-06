@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import { FaCcVisa, FaCcMastercard, FaCcAmex, FaArrowLeft } from "react-icons/fa";
+import { FaCcVisa, FaCcMastercard, FaArrowLeft } from "react-icons/fa";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../app/store";
+import { setCardInfo } from "../../../payments/redux/paymentSlice";
 
 interface Props {
   onBack: () => void;
@@ -24,20 +25,17 @@ interface CardFormData {
 
 const CardPaymentForm: React.FC<Props> = ({ onBack }) => {
   const userInfo = useSelector((state: RootState) => state.payment.userInfo);
+  const dispatch = useDispatch();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<CardFormData>();
 
-  const acceptedTerms = watch("acceptedTerms");
 
   const onSubmit = (data: CardFormData) => {
-    if (!acceptedTerms) {
-      return alert("Debes aceptar los términos y condiciones");
-    }
+    dispatch(setCardInfo(data));
     console.log("Información del usuario:", userInfo);
     console.log("Formulario:", data);
     alert("Pago procesado correctamente ✅");

@@ -7,23 +7,27 @@ interface UserInfo {
     phone: string;
 }
 
-interface PaymentState{
-    userInfo: UserInfo;
-}
-/*interface PaymentState {
-  name: string;
-  email: string;
-  phone: string;
+interface CardInfo {
   cardNumber: string;
+  expMonth: string;
+  expYear: string;
+  cvc: string;
+  nameOnCard: string;
+  idType: string;
+  idNumber: string;
+  installments: string;
   acceptedTerms: boolean;
-}*/
+  acceptedDataPolicy: boolean;
+}
+
+interface PaymentState{
+    userInfo: UserInfo | null;
+    cardInfo: CardInfo | null;
+}
 
 const initialState: PaymentState = {
-    userInfo: {
-        name: "",
-        email: "",
-        phone: "",
-    },
+  userInfo: null,
+  cardInfo: null,
 };
 
 export const paymentSlice = createSlice({
@@ -33,10 +37,13 @@ export const paymentSlice = createSlice({
     setUserInfo: (state,action: PayloadAction<UserInfo>) => {
       state.userInfo = action.payload;
     },
+    setCardInfo: (state, action: PayloadAction<CardInfo>) => {
+      state.cardInfo = action.payload;
+    },
     resetPaymentData: () => initialState,
   },
 });
 
-export const { setUserInfo, resetPaymentData } = paymentSlice.actions;
+export const { setUserInfo,setCardInfo,resetPaymentData } = paymentSlice.actions;
 
 export default paymentSlice.reducer;
