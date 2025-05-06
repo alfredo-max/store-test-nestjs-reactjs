@@ -12,10 +12,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStep, setModalStep] = useState(1);
   
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    setModalStep(1); // Reinicia siempre al paso 1
-  };
 
   return (
     <>
