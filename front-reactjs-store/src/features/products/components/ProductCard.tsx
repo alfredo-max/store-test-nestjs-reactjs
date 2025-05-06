@@ -45,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         >
           {modalStep === 1 ? (
              <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto scrollbar-none">
-                <UserInfoForm onContinue={() => setModalStep(2)} />
+                <UserInfoForm onContinue={() => setModalStep(2)} onBack={() => setIsModalOpen(false)} />
              </div>
           ) : (
             <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto">
