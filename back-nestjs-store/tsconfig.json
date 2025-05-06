@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",                      // Requerido para AWS Lambda
+    "target": "ES2023",                        // AWS Lambda usa Node.js 18.x (compatible hasta ES2022, pero ES2020 es más seguro)
+    "outDir": "./dist",                        // Carpeta de salida para Serverless
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true                    // 👈 IMPORTANTE para compatibilidad con aws-serverless-express
+  },
+  "include": ["src/**/*", "lambda.ts"]
+}
