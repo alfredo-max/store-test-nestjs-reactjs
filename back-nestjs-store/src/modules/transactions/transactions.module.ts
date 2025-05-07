@@ -5,9 +5,10 @@ import { TransactionsController } from './infrastructure/adapters/inbound/rest/t
 import { GetAcceptanceTokensUseCaseImpl } from './application/usecases/get-acceptance-tokens.use-case-impl';
 import { ExternalTokenServiceImpl } from './infrastructure/adapters/inbound/outbound/services/external-token.service.impl';
 import { TransactionService } from './application/services/transaction.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule,ConfigModule],
   controllers: [TransactionsController],
   providers: [
     TransactionService,
