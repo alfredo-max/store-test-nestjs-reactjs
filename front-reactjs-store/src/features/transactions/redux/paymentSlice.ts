@@ -1,11 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-
-interface UserInfo {
-    name: string;
-    email: string;
-    phone: string;
-}
+import { UserInfo } from "../models/UserInfo";
 
 interface CardInfo {
   cardNumber: string;

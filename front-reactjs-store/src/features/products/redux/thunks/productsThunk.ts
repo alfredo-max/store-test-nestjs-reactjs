@@ -9,7 +9,7 @@ export const fetchProducts = createAsyncThunk<Product[]>(
       return await getAllProducts();
     } catch (err: any) {
       console.error('Error fetching products:', err);
-      return rejectWithValue(err.response?.data?.message || err.message);
+      return rejectWithValue(err.response?.data?.message ?? err.message);
     }
   }
 );
