@@ -2,8 +2,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import ProductCard from './ProductCard';
 import { AppDispatch, RootState } from '../../../app/store';
-import { fetchProducts } from '../../redux/thunks/productsThunk';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts } from '../redux/thunks/productsThunk';
 
 const ProductList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

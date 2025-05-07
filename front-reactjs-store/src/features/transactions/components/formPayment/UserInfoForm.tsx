@@ -4,7 +4,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../app/store";
-import { setUserInfo } from "../../../transactions/redux/paymentSlice";
+import { setUserInfo } from "../../redux/paymentSlice";
 
 interface Props {
   onContinue: () => void;

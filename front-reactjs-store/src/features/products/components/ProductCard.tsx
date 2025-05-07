@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Product } from "../models/Product";
-import Modal from "./Modal";
+import Modal from "../../transactions/components/formPayment/Modal";
 import { useDispatch } from "react-redux";
-import { UserInfoForm } from "./forms/UserInfoForm";
-import CardPaymentForm from "./forms/CardPaymentForm";
+import { UserInfoForm } from "../../transactions/components/formPayment/UserInfoForm";
+import CardPaymentForm from "../../transactions/components/formPayment/CardPaymentForm";
 import { resetPaymentData } from "../../transactions/redux/paymentSlice";
 
 interface ProductCardProps {

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import productsReducer from '../features/redux/slices/productsSlice';
+import productsReducer from '../features/products/redux/slices/productsSlice';
 import paymentReducer from '../features/transactions/redux/paymentSlice';
 
 export const store = configureStore({
