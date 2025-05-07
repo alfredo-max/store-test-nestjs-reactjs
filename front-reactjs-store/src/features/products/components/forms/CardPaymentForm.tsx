@@ -3,7 +3,7 @@ import { FaCcVisa, FaCcMastercard, FaArrowLeft } from "react-icons/fa";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../app/store";
-import { setCardInfo } from "../../../payments/redux/paymentSlice";
+import { setCardInfo } from "../../../transactions/redux/paymentSlice";
 
 interface Props {
   onBack: () => void;

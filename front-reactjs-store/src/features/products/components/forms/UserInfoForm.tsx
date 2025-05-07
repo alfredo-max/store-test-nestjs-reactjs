@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserInfo } from "../../../payments/redux/paymentSlice";
 import { RootState } from "../../../../app/store";
+import { setUserInfo } from "../../../transactions/redux/paymentSlice";
 
 interface Props {
   onContinue: () => void;
