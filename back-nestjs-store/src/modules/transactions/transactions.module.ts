@@ -3,7 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 
 import { TransactionsController } from './infrastructure/adapters/inbound/rest/transactions.controller';
 import { GetAcceptanceTokensUseCaseImpl } from './application/usecases/get-acceptance-tokens.use-case-impl';
-import { ExternalTokenServiceImpl } from './infrastructure/adapters/inbound/outbound/services/external-token.service.impl';
+import { ExternalTokenServiceImpl } from './infrastructure/adapters/outbound/services/external-token.service.impl';
 import { TransactionService } from './application/services/transaction.service';
 import { ConfigModule } from '@nestjs/config';
 

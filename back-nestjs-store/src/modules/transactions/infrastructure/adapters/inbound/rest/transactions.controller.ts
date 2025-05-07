@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get} from '@nestjs/common';
 import { TransactionService } from 'src/modules/transactions/application/services/transaction.service';
 import { AcceptanceTokens } from 'src/modules/transactions/domain/model/acceptance-tokens';
 
@@ -10,5 +10,4 @@ export class TransactionsController {
     async getTokens():Promise<AcceptanceTokens> {
         return await this.transactionService.getAcceptanceTokens();
     }
-
 }
