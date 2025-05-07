@@ -3,8 +3,8 @@ import { Repository } from 'typeorm';
 import { ProductEntity } from './entities/product.entity';
 import { ProductMapper } from './mapper/product.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ProductRepository } from 'src/modules/producto/domain/ports/outbound/repositories/product.repository';
-import { Product } from 'src/modules/producto/domain/model/product.model';
+import { ProductRepository } from 'src/modules/product/domain/ports/outbound/repositories/product.repository';
+import { Product } from 'src/modules/product/domain/model/product.model';
 
 @Injectable()
 export class ProductRepositoryImpl implements ProductRepository {

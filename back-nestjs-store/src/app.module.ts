@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProductoModule } from './modules/producto/producto.module';
+import { ProductoModule } from './modules/product/product.module';
 import { AppController } from './app.controller';
 import configuration from './config/configuration';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ProductEntity } from './modules/producto/infrastructure/adapters/outbound/persistence/entities/product.entity';
+import { ProductEntity } from './modules/product/infrastructure/adapters/outbound/persistence/entities/product.entity';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 
 @Module({
