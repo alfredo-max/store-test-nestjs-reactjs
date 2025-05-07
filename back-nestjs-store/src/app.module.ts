@@ -5,7 +5,7 @@ import { AppController } from './app.controller';
 import configuration from './config/configuration';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductEntity } from './modules/product/infrastructure/adapters/outbound/persistence/entities/product.entity';
-import { TransactionsModule } from './modules/transactions/transactions.module';
+import { TransactionsModule } from './modules/transaction/transactions.module';
 
 @Module({
   imports: [

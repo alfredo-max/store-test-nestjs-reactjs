@@ -1,9 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { ExternalTokenService } from 'src/modules/transactions/domain/ports/outbound/external-token.service';
-import { AcceptanceTokens } from 'src/modules/transactions/domain/model/acceptance-tokens';
-import { PresignedToken } from 'src/modules/transactions/domain/model/presigned-token.model';
+import { ExternalTokenService } from 'src/modules/transaction/domain/ports/outbound/external-token.service';
+import { AcceptanceTokens } from 'src/modules/transaction/domain/model/acceptance-tokens';
+import { PresignedToken } from 'src/modules/transaction/domain/model/presigned-token.model';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
