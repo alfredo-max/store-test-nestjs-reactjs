@@ -13,7 +13,7 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
-      envFilePath: `.env.${process.env.NODE_ENV || 'local'}`,
+      envFilePath: `.env.${process.env.NODE_ENV ?? 'local'}`,
     }),
 
     TypeOrmModule.forRootAsync({
