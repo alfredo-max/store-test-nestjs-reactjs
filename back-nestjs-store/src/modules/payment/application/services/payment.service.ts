@@ -3,7 +3,7 @@ import { GetAcceptanceTokensUseCase } from '../../domain/ports/inbound/get-accep
 import { AcceptanceTokens } from '../../domain/model/acceptance-tokens';
 
 @Injectable()
-export class TransactionService {
+export class PaymentService {
 
     constructor(
         @Inject('GetAcceptanceTokensUseCase')

@@ -28,16 +28,16 @@ export const tokenizeCardRequest = async (cardData: {
 
 
 export const getAcceptanceTokenRequest = async (): Promise<AcceptanceTokens> => {
-  const response = await api.get<AcceptanceTokens>(API_ENDPOINTS.TRANSACTION+'/acceptance-tokenss');
+  const response = await api.get<AcceptanceTokens>(API_ENDPOINTS.PAYMENTS+'/acceptance-tokenss');
   return response.data;
 };
 
 export const makePaymentRequest = async (paymentData: any) => {
-  const response = await api.post(API_ENDPOINTS.TRANSACTION+'/transaction', paymentData);
+  const response = await api.post(API_ENDPOINTS.PAYMENTS+'/transaction', paymentData);
   return response.data;
 };
 
 export const getPaymentStatusRequest = async (transactionId: string) => {
-  const response = await api.get(API_ENDPOINTS.TRANSACTION+`/transaction/${transactionId}/status`);
+  const response = await api.get(API_ENDPOINTS.PAYMENTS+`/transaction/${transactionId}/status`);
   return response.data;
 };

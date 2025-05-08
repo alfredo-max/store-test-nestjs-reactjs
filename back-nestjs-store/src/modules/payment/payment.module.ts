@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 
-import { TransactionsController } from './infrastructure/adapters/inbound/rest/transactions.controller';
 import { GetAcceptanceTokensUseCaseImpl } from './application/usecases/get-acceptance-tokens.use-case-impl';
 import { ExternalTokenServiceImpl } from './infrastructure/adapters/outbound/services/external-token.service.impl';
-import { TransactionService } from './application/services/transaction.service';
 import { ConfigModule } from '@nestjs/config';
+import { PaymentController } from './infrastructure/adapters/inbound/rest/payment.controller';
+import { PaymentService } from './application/services/payment.service';
 
 @Module({
   imports: [HttpModule,ConfigModule],
-  controllers: [TransactionsController],
+  controllers: [PaymentController],
   providers: [
-    TransactionService,
+    PaymentService,
     {
       provide: 'GetAcceptanceTokensUseCase',
       useClass: GetAcceptanceTokensUseCaseImpl,
@@ -22,4 +22,4 @@ import { ConfigModule } from '@nestjs/config';
     },
   ],
 })
-export class TransactionsModule {}
+export class PaymentModule {}
