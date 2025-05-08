@@ -43,7 +43,7 @@ const paymentSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(fetchAcceptanceTokens.rejected, (state, action) => {
-        state.error = action.error.message || 'Error al obtener los tokens';
+        state.error = (action.payload as string) || 'Error al obtener los tokens';
         state.isLoading = false;
       })
 
@@ -57,7 +57,7 @@ const paymentSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(tokenizeCard.rejected, (state, action) => {
-        state.error = action.error.message || 'Error al tokenizar la tarjeta';
+        state.error = (action.payload as string) || 'Error al tokenizar la tarjeta';
         state.isLoading = false;
       })
 
@@ -71,7 +71,7 @@ const paymentSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(makePayment.rejected, (state, action) => {
-        state.error = action.error.message || 'Error al realizar el pago';
+        state.error = (action.payload as string) || 'Error al realizar el pago';
         state.isLoading = false;
       })
 
@@ -85,7 +85,7 @@ const paymentSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(pollPaymentStatus.rejected, (state, action) => {
-        state.error = action.error.message || 'Error al consultar el estado del pago';
+        state.error = (action.payload as string) || 'Error al consultar el estado del pago';
         state.isLoading = false;
       });
   },

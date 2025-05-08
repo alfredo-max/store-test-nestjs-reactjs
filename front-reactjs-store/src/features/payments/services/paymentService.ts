@@ -5,7 +5,7 @@ import api from '../../../shared/api/api';
 
 
 const PAYMENT_API = 'https://api-sandbox.co.uat.wompi.dev/v1';
-const PUB_KEY = import.meta.env.PUB_KEY
+const PUB_KEY = import.meta.env.VITE_PUB_KEY
 
 export const tokenizeCardRequest = async (cardData: {
   number: string;

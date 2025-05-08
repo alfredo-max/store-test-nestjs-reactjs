@@ -9,7 +9,9 @@ import { UserInfo } from '../models/UserInfo';
 
 
 const PaymentFlow = () => {
+    
     const {
+        paymentError,
         tokenizeUserCard,
         initiatePayment,
         startPollPaymentStatus,
@@ -21,7 +23,6 @@ const PaymentFlow = () => {
 
     const cardFormData: (CardFormData | null) = useSelector((state: RootState) => state.formPayment.cardInfo);
     const userInfo: (UserInfo | null) = useSelector((state: RootState) => state.formPayment.userInfo);
-
     const [status, setStatus] = useState<PaymentStatusEnum>(PaymentStatusEnum.PENDING);
 
     useEffect(() => {
@@ -40,20 +41,22 @@ const PaymentFlow = () => {
                     );
                 } catch {
                     setStatus(PaymentStatusEnum.ERROR);
+                } finally{
+                    if(paymentError!=null){
+                        setStatus(PaymentStatusEnum.ERROR);
+                    }
                 }
             }
         };
 
         startTransactionFlow();
-
-        return () => {
-            resetPayment(); // limpiar estado al desmontar
-        };
     }, []);
 
     useEffect(() => {
         const runPayment = async () => {
+            console.log("entrando funcion hacer pago: "+cardToken)
             if (cardToken) {
+                console.log("card token es diferente de null")
                 try {
                     //await initiatePayment({ ...paymentPayload, cardToken });
                 } catch {
