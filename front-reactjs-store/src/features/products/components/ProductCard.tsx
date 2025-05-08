@@ -7,7 +7,8 @@ import CardPaymentForm from "../../payments/components/formPayment/CardPaymentFo
 import { resetPaymentData } from "../../payments/redux/slices/slices/formPaymentSlice";
 import { PaymentStepEnum } from "../../payments/enums/PaymentStepEnum";
 import { resetSelectedProduct, setSelectedProduct } from "../redux/slices/selectedProductPaymentSlice";
-import {SummaryPaymentComponent} from "../../payments/components/formPayment/SummaryPaymentComponent"
+import SummaryPaymentComponent from "../../payments/components/formPayment/SummaryPaymentComponent";
+
 
 interface ProductCardProps {
   product: Product;

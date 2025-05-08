@@ -7,7 +7,6 @@ import { RiSecurePaymentFill } from 'react-icons/ri';
 import PaymentLoadingScreen from '../PaymentLoadingScreen';
 import { CardFormData } from '../../models/CardFormData';
 import { UserInfo } from '../../models/UserInfo';
-import { tokenizeAndPay } from '../../services/paymentFlow';
 
 
 interface Props {
@@ -21,18 +20,18 @@ const onPay = async (cardInfoCard: CardFormData | null, infoUser: UserInfo | nul
     return;
   }
 
-  try {
-    const response = await tokenizeAndPay(cardInfoCard,infoUser);
-    console.log('Pago exitoso:', response);
-  } catch (error) {
-    console.error('Error en el proceso:', error);
-  }
+  // try {
+  //   const response = await tokenizeAndPay(cardInfoCard,infoUser);
+  //   console.log('Pago exitoso:', response);
+  // } catch (error) {
+  //   console.error('Error en el proceso:', error);
+  // }
 };
 
 const SummaryPaymentComponent: React.FC<Props> = ({ onBack }) => {
   const productSelected:Product | null = useSelector((state: RootState) => state.selectedProductPayment.selectedProduct);
-  const cardInfoCard : CardFormData | null = useSelector((state: RootState) => state.payment.cardInfo)
-  const infoUser : UserInfo | null = useSelector((state: RootState) => state.payment.userInfo)
+  const cardInfoCard : CardFormData | null = useSelector((state: RootState) => state.formPayment.cardInfo)
+  const infoUser : UserInfo | null = useSelector((state: RootState) => state.formPayment.userInfo)
   
   const [isLoading, setIsLoading] = useState(false);
   const productAmount = productSelected?.price;
@@ -79,3 +78,5 @@ const SummaryPaymentComponent: React.FC<Props> = ({ onBack }) => {
     </>
   );
 };
+
+export default SummaryPaymentComponent;

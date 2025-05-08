@@ -19,9 +19,9 @@ type FormData = {
 
 export const UserInfoForm: React.FC<Props> = ({ onContinue, onBack }) => {
   const { register, handleSubmit, setValue, formState: { errors }} = useForm<FormData>();
-  const userInfo = useSelector((state: RootState) => state.payment.userInfo);
+  const userInfo = useSelector((state: RootState) => state.formPayment.userInfo);
   const dispatch = useDispatch();
-  
+    
   useEffect(() => {
     if (userInfo) {
       setValue("email", userInfo.email);

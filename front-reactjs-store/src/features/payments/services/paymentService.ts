@@ -28,7 +28,7 @@ export const tokenizeCardRequest = async (cardData: {
 
 
 export const getAcceptanceTokenRequest = async (): Promise<AcceptanceTokens> => {
-  const response = await api.get<AcceptanceTokens>(API_ENDPOINTS.PAYMENTS+'/acceptance-tokenss');
+  const response = await api.get<AcceptanceTokens>(API_ENDPOINTS.PAYMENTS+'/acceptance-tokens');
   return response.data;
 };
 

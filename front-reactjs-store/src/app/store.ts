@@ -7,7 +7,7 @@ import paymentReducer from '../features/payments/redux/slices/slices/paymentSlic
 export const store = configureStore({
   reducer: {
     products: productsReducer,
-    formPaymentSlice: formPaymentReducer,
+    formPayment: formPaymentReducer,
     selectedProductPayment: selectedProductPayment,
     payment: paymentReducer,
   },

@@ -4,14 +4,20 @@ import ProductCard from './ProductCard';
 import { AppDispatch, RootState } from '../../../app/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../redux/thunks/productsThunk';
+import { usePayment } from '../../payments/hooks/usePayment';
 
 const ProductList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { products, loading, error } = useSelector((state: RootState) => state.products);
+  const { loadAcceptanceTokens } = usePayment();
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  useEffect(() => {
+    loadAcceptanceTokens();
+  }, []);
 
   if (loading) return <p>Cargando productos...</p>;
   if (error) return <p>{error}</p>;

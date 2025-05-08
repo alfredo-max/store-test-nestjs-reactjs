@@ -4,13 +4,14 @@ import { fetchAcceptanceTokens } from '../../thunks/acceptanceThunks';
 import { tokenizeCard } from '../../thunks/tokenizationThunks';
 import { makePayment } from '../../thunks/transactionThunks';
 import { pollPaymentStatus } from '../../thunks/pollingThunks';
+import { PaymentStatusEnum } from '../../../enums/PaymentStatusEnum';
 
 
 interface PaymentState {
   acceptanceTokens: AcceptanceTokens | null;
   cardToken: string | null;
   transactionId: string | null;
-  paymentStatus: 'PENDING' | 'APPROVED' | 'DECLINED' | null;
+  paymentStatus: PaymentStatusEnum | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -60,7 +61,7 @@ const paymentSlice = createSlice({
         state.isLoading = false;
       })
 
-      // Make payment
+      //Make payment
       .addCase(makePayment.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -74,13 +75,13 @@ const paymentSlice = createSlice({
         state.isLoading = false;
       })
 
-      // Consultar estado de pago
+      //Consultar estado de pago
       .addCase(pollPaymentStatus.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
       .addCase(pollPaymentStatus.fulfilled, (state, action) => {
-        state.paymentStatus = action.payload.status;
+        state.paymentStatus = action.payload;
         state.isLoading = false;
       })
       .addCase(pollPaymentStatus.rejected, (state, action) => {

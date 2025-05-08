@@ -4,9 +4,9 @@ import { RootState } from "../../../app/store";
 
 
   const PaymentLoadingScreen: React.FC = () => {
-    const userInfo = useSelector((state: RootState) => state.payment.userInfo);
-    const cardInfo = useSelector((state: RootState) => state.payment.cardInfo);
-
+    const userInfo = useSelector((state: RootState) => state.formPayment.userInfo);
+    const cardInfo = useSelector((state: RootState) => state.formPayment.cardInfo);
+    
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div className="text-white text-lg">

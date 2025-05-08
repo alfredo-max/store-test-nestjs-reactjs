@@ -19,12 +19,11 @@ const CardPaymentForm: React.FC<Props> = ({ onBack,onContinue }) => {
     formState: { errors },
   } = useForm<CardFormData>();
 
-
   const onSubmit = (data: CardFormData) => {
     dispatch(setCardInfo(data));
     onContinue();
   };
-
+ 
   return (
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-sm text-gray-800">
         <div className="flex items-center gap-2">
