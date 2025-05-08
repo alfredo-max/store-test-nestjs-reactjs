@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Product } from "../models/Product";
-import Modal from "../../transactions/components/formPayment/Modal";
+import Modal from "../../payments/components/formPayment/Modal";
 import { useDispatch } from "react-redux";
-import { UserInfoForm } from "../../transactions/components/formPayment/UserInfoForm";
-import CardPaymentForm from "../../transactions/components/formPayment/CardPaymentForm";
-import { resetPaymentData } from "../../transactions/redux/paymentSlice";
-import { PaymentStepEnum } from "../../transactions/enums/PaymentStepEnum";
-import SummaryPaymentComponent from "../../transactions/components/formPayment/SummaryPaymentComponent";
+import { UserInfoForm } from "../../payments/components/formPayment/UserInfoForm";
+import CardPaymentForm from "../../payments/components/formPayment/CardPaymentForm";
+import { resetPaymentData } from "../../payments/redux/slices/slices/formPaymentSlice";
+import { PaymentStepEnum } from "../../payments/enums/PaymentStepEnum";
+import { resetSelectedProduct, setSelectedProduct } from "../redux/slices/selectedProductPaymentSlice";
+import {SummaryPaymentComponent} from "../../payments/components/formPayment/SummaryPaymentComponent"
 
 interface ProductCardProps {
   product: Product;
@@ -16,6 +17,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStep, setModalStep] = useState(1);
   const dispatch = useDispatch();
+
+  const handlePayClick = () => {
+    dispatch(setSelectedProduct(product));
+    setIsModalOpen(true);
+  };
 
   return (
     <>
@@ -33,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </p>
         <button 
           className="bg-black text-white py-2 px-4 rounded-full mt-2 w-full"
-          onClick={() => setIsModalOpen(true)}>
+          onClick={() => handlePayClick()}>
           Pay with credit card
         </button>
       </div>
@@ -43,6 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           onClose={() => {
             setIsModalOpen(false);
             dispatch(resetPaymentData());
+            dispatch(resetSelectedProduct())
           }}
           title="Confirmar compra"
         >
@@ -64,7 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               content = (
                 <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto">
                   {/* <h2 className="text-lg font-semibold text-black">Resumen de tu pago</h2> */}
-                  <SummaryPaymentComponent onBack={() => setModalStep(PaymentStepEnum.CARD_FORM)} onPay={() => {}} />
+                  <SummaryPaymentComponent onBack={() => setModalStep(PaymentStepEnum.CARD_FORM)}/>
                 </div>
               );          
             }

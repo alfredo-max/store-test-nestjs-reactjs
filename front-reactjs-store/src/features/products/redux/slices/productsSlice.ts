@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product } from '../../products/models/Product';
 import { fetchProducts } from '../thunks/productsThunk';
+import { Product } from '../../models/Product';
 
 interface ProductsState {
   products: Product[];

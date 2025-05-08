@@ -1,0 +1,16 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { makePaymentRequest } from '../../services/paymentService';
+import { PaymentPayload } from '../../models/PaymentPayload';
+import { IPaymentResponse } from '../../models/PaymentResponse';
+
+export const makePayment = createAsyncThunk<IPaymentResponse, PaymentPayload>(
+  'payment/makePayment',
+  async (payload, thunkAPI) => {
+    try {
+      const result = await makePaymentRequest(payload); // usa el servicio
+      return result;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data?.message ?? 'Error al procesar el pago');
+    }
+  }
+);

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { FaCcVisa, FaCcMastercard, FaArrowLeft } from "react-icons/fa";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useDispatch} from "react-redux";
-import { setCardInfo } from "../../redux/paymentSlice";
+import { setCardInfo } from "../../redux/slices/slices/formPaymentSlice";
 import { CardFormData } from "../../models/CardFormData";
 
 interface Props {

@@ -4,7 +4,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../app/store";
-import { setUserInfo } from "../../redux/paymentSlice";
+import { setUserInfo } from "../../redux/slices/slices/formPaymentSlice";
 
 interface Props {
   onContinue: () => void;
@@ -89,7 +89,7 @@ export const UserInfoForm: React.FC<Props> = ({ onContinue, onBack }) => {
         type="submit"
         className="w-full bg-black text-white py-3 rounded-full flex justify-center items-center gap-2 hover:bg-gray-900 transition"
       >
-        <span role="img" aria-label="lock"><RiSecurePaymentFill /></span> Continuar con tu pago
+        <span><RiSecurePaymentFill /></span> Continuar con tu pago
       </button>
     </form>
   );

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserInfo } from "../models/UserInfo";
+import { UserInfo } from "../../../models/UserInfo";
 
 interface CardInfo {
   cardNumber: string;
@@ -14,17 +14,17 @@ interface CardInfo {
   acceptedDataPolicy: boolean;
 }
 
-interface PaymentState{
+interface FormPaymentState{
     userInfo: UserInfo | null;
     cardInfo: CardInfo | null;
 }
 
-const initialState: PaymentState = {
+const initialState: FormPaymentState = {
   userInfo: null,
   cardInfo: null,
 };
 
-export const paymentSlice = createSlice({
+export const formPaymentSlice = createSlice({
   name: "payment",
   initialState,
   reducers: {
@@ -38,6 +38,6 @@ export const paymentSlice = createSlice({
   },
 });
 
-export const { setUserInfo,setCardInfo,resetPaymentData } = paymentSlice.actions;
+export const { setUserInfo,setCardInfo,resetPaymentData } = formPaymentSlice.actions;
 
-export default paymentSlice.reducer;
+export default formPaymentSlice.reducer;
