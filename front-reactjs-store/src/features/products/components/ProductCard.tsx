@@ -8,6 +8,7 @@ import { resetPaymentData } from "../../payments/redux/slices/slices/formPayment
 import { PaymentStepEnum } from "../../payments/enums/PaymentStepEnum";
 import { resetSelectedProduct, setSelectedProduct } from "../redux/slices/selectedProductPaymentSlice";
 import SummaryPaymentComponent from "../../payments/components/formPayment/SummaryPaymentComponent";
+import Transaction from "../../payments/components/formPayment/Tansaction";
 
 
 interface ProductCardProps {
@@ -71,8 +72,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             } else if (modalStep === PaymentStepEnum.SUMMARY) {
               content = (
                 <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto">
-                  {/* <h2 className="text-lg font-semibold text-black">Resumen de tu pago</h2> */}
                   <SummaryPaymentComponent onBack={() => setModalStep(PaymentStepEnum.CARD_FORM)}/>
+                </div>
+              );          
+            }else if (modalStep === PaymentStepEnum.Transaction) {
+              content = (
+                <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto">
+                  <Transaction/>
                 </div>
               );          
             }

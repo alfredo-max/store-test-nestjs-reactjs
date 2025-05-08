@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../app/store';
 import { Product } from '../../../products/models/Product';
 import { RiSecurePaymentFill } from 'react-icons/ri';
-import PaymentLoadingScreen from '../PaymentLoadingScreen';
+import PaymentLoadingScreen from './Tansaction';
 import { CardFormData } from '../../models/CardFormData';
 import { UserInfo } from '../../models/UserInfo';
 
