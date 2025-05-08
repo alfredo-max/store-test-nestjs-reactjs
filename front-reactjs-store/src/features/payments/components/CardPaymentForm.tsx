@@ -2,8 +2,8 @@ import { useForm } from "react-hook-form";
 import { FaCcVisa, FaCcMastercard, FaArrowLeft } from "react-icons/fa";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { useDispatch} from "react-redux";
-import { setCardInfo } from "../../redux/slices/slices/formPaymentSlice";
-import { CardFormData } from "../../models/CardFormData";
+import { setCardInfo } from "../redux/slices/slices/formPaymentSlice";
+import { CardFormData } from "../models/CardFormData";
 
 interface Props {
   onBack: () => void;
@@ -23,7 +23,7 @@ const CardPaymentForm: React.FC<Props> = ({ onBack,onContinue }) => {
     dispatch(setCardInfo(data));
     onContinue();
   };
- 
+
   return (
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-sm text-gray-800">
         <div className="flex items-center gap-2">

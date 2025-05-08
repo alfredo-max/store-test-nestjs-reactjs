@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Product } from "../models/Product";
-import Modal from "../../payments/components/formPayment/Modal";
+import Modal from "../../payments/components/Modal";
 import { useDispatch } from "react-redux";
-import { UserInfoForm } from "../../payments/components/formPayment/UserInfoForm";
-import CardPaymentForm from "../../payments/components/formPayment/CardPaymentForm";
+import { UserInfoForm } from "../../payments/components/UserInfoForm";
+import CardPaymentForm from "../../payments/components/CardPaymentForm";
 import { resetPaymentData } from "../../payments/redux/slices/slices/formPaymentSlice";
 import { PaymentStepEnum } from "../../payments/enums/PaymentStepEnum";
 import { resetSelectedProduct, setSelectedProduct } from "../redux/slices/selectedProductPaymentSlice";
-import SummaryPaymentComponent from "../../payments/components/formPayment/SummaryPaymentComponent";
-import Transaction from "../../payments/components/formPayment/Tansaction";
+import SummaryPaymentComponent from "../../payments/components/SummaryPaymentComponent";
+import PaymentFlow from "../../payments/components/PaymentFlow";
 
 
 interface ProductCardProps {
@@ -72,13 +72,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             } else if (modalStep === PaymentStepEnum.SUMMARY) {
               content = (
                 <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto">
-                  <SummaryPaymentComponent onBack={() => setModalStep(PaymentStepEnum.CARD_FORM)}/>
+                  <SummaryPaymentComponent onBack={() => setModalStep(PaymentStepEnum.CARD_FORM)} onContinue={() => setModalStep(PaymentStepEnum.PAYMENT)}/>
                 </div>
               );          
-            }else if (modalStep === PaymentStepEnum.Transaction) {
+            }else if (modalStep === PaymentStepEnum.PAYMENT) {
               content = (
                 <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto">
-                  <Transaction/>
+                  <PaymentFlow></PaymentFlow>
                 </div>
               );          
             }

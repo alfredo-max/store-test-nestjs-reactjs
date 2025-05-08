@@ -1,5 +1,5 @@
-
 const Transaction = ({ status = 'processing' }) => {
+  
   const getColor = () => {
     switch (status) {
       case 'completed':
