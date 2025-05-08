@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../../app/store';
-import { selectAcceptanceTokens, selectCardToken, selectPaymentError, selectPaymentStatus, selectTransactionId } from '../redux/selectors';
+import { selectAcceptanceTokens, selectCardToken, selectIsLoading, selectPaymentError, selectPaymentStatus, selectTransactionId } from '../redux/selectors';
 import { fetchAcceptanceTokens } from '../redux/thunks/acceptanceThunks';
 import { tokenizeCard } from '../redux/thunks/tokenizationThunks';
 import { pollPaymentStatus } from '../redux/thunks/pollingThunks';
@@ -18,7 +18,8 @@ export const usePayment = () => {
   const transactionId = useSelector((state: RootState) => selectTransactionId(state));
   const paymentStatus = useSelector((state: RootState) => selectPaymentStatus(state));
   const paymentError = useSelector((state: RootState) => selectPaymentError(state));
-
+  const isPaying = useSelector((state: RootState) => selectIsLoading(state));
+  
   const loadAcceptanceTokens = () => dispatch(fetchAcceptanceTokens());
   const tokenizeUserCard = (cardData: Card) => dispatch(tokenizeCard(cardData));
   const initiatePayment = (paymentPayload: PaymentPayload) => dispatch(makePayment(paymentPayload));
@@ -36,5 +37,6 @@ export const usePayment = () => {
     initiatePayment,
     startPollPaymentStatus,
     resetPayment,
+    isPaying
   };
 };

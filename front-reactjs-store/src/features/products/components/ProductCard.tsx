@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Product } from "../models/Product";
 import Modal from "../../payments/components/Modal";
 import { useDispatch } from "react-redux";
@@ -20,11 +20,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [modalStep, setModalStep] = useState(1);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    setModalStep(PaymentStepEnum.USER_INFO);
+  }, []);
+
   const handlePayClick = () => {
     dispatch(setSelectedProduct(product));
     setIsModalOpen(true);
   };
-
   return (
     <>
       <div className="bg-white rounded-2xl shadow-md p-4 flex flex-col items-center space-y-4">
@@ -78,7 +81,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             }else if (modalStep === PaymentStepEnum.PAYMENT) {
               content = (
                 <div className="max-h-[70vh] overflow-y-auto p-4 w-full max-w-md mx-auto">
-                  <PaymentFlow></PaymentFlow>
+                  <PaymentFlow onRetry={() => setModalStep(PaymentStepEnum.USER_INFO)}></PaymentFlow>
                 </div>
               );          
             }

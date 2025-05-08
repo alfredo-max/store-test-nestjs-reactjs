@@ -8,7 +8,11 @@ import { CardFormData } from '../models/CardFormData';
 import { UserInfo } from '../models/UserInfo';
 
 
-const PaymentFlow = () => {
+interface Props {
+    onRetry: () => void;
+}
+
+const PaymentFlow : React.FC<Props> = ({onRetry}) => {
     
     const {
         paymentError,
@@ -40,10 +44,10 @@ const PaymentFlow = () => {
                         }
                     );
                 } catch {
-                    setStatus(PaymentStatusEnum.ERROR);
+                    handlePaymentError();
                 } finally{
                     if(paymentError!=null){
-                        setStatus(PaymentStatusEnum.ERROR);
+                        handlePaymentError()
                     }
                 }
             }
@@ -77,12 +81,17 @@ const PaymentFlow = () => {
     useEffect(() => {
         if (paymentStatus === 'APPROVED') {
             setStatus(PaymentStatusEnum.APPROVED);
-        } else if (paymentStatus === 'DECLINED') {
+        } else {
             setStatus(PaymentStatusEnum.ERROR);
         }
     }, [paymentStatus]);
 
-    return <Transaction status={status} />;
+    const handlePaymentError = () => {
+        resetPayment();
+        setStatus(PaymentStatusEnum.ERROR);
+    };
+
+    return <Transaction status={status} onRetry={() => onRetry()} />;
 };
 
 export default PaymentFlow;

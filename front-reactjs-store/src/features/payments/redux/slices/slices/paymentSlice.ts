@@ -35,12 +35,10 @@ const paymentSlice = createSlice({
     builder
       // get acceptance tokens
       .addCase(fetchAcceptanceTokens.pending, (state) => {
-        state.isLoading = true;
         state.error = null;
       })
       .addCase(fetchAcceptanceTokens.fulfilled, (state, action) => {
         state.acceptanceTokens = action.payload;
-        state.isLoading = false;
       })
       .addCase(fetchAcceptanceTokens.rejected, (state, action) => {
         state.error = (action.payload as string) || 'Error al obtener los tokens';
@@ -54,7 +52,6 @@ const paymentSlice = createSlice({
       })
       .addCase(tokenizeCard.fulfilled, (state, action) => {
         state.cardToken = action.payload;
-        state.isLoading = false;
       })
       .addCase(tokenizeCard.rejected, (state, action) => {
         state.error = (action.payload as string) || 'Error al tokenizar la tarjeta';
@@ -63,12 +60,10 @@ const paymentSlice = createSlice({
 
       //Make payment
       .addCase(makePayment.pending, (state) => {
-        state.isLoading = true;
         state.error = null;
       })
       .addCase(makePayment.fulfilled, (state, action) => {
         state.transactionId = action.payload.transactionId;
-        state.isLoading = false;
       })
       .addCase(makePayment.rejected, (state, action) => {
         state.error = (action.payload as string) || 'Error al realizar el pago';
@@ -77,12 +72,10 @@ const paymentSlice = createSlice({
 
       //Consultar estado de pago
       .addCase(pollPaymentStatus.pending, (state) => {
-        state.isLoading = true;
         state.error = null;
       })
       .addCase(pollPaymentStatus.fulfilled, (state, action) => {
         state.paymentStatus = action.payload;
-        state.isLoading = false;
       })
       .addCase(pollPaymentStatus.rejected, (state, action) => {
         state.error = (action.payload as string) || 'Error al consultar el estado del pago';
