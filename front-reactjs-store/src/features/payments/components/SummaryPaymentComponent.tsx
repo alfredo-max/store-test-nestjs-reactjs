@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { Product } from '../../products/models/Product';
 import { RiSecurePaymentFill } from 'react-icons/ri';
+import { Charge } from '../enums/chargeEnum';
 
 
 interface Props {
@@ -14,9 +15,7 @@ interface Props {
 const SummaryPaymentComponent: React.FC<Props> = ({ onBack,onContinue}) => {
   const productSelected:Product | null = useSelector((state: RootState) => state.selectedProductPayment.selectedProduct);
   const productAmount = productSelected?.price;
-  const baseFee = 4500;
-  const deliveryFee = 3000;
-  const total = (productAmount ?? 0) + baseFee + deliveryFee;
+  const total = (productAmount ?? 0) + Charge.BASE + Charge.SHIPPING;
 
   return (
       <div className="space-y-6 text-sm text-gray-800">
@@ -32,11 +31,11 @@ const SummaryPaymentComponent: React.FC<Props> = ({ onBack,onContinue}) => {
           </div>
           <div className="flex justify-between">
             <span>Comisión base:</span>
-            <span>${baseFee.toLocaleString('es-CO')}</span>
+            <span>${Charge.BASE.toLocaleString('es-CO')}</span>
           </div>
           <div className="flex justify-between">
             <span>Envío:</span>
-            <span>${deliveryFee.toLocaleString('es-CO')}</span>
+            <span>${Charge.SHIPPING.toLocaleString('es-CO')}</span>
           </div>
           <hr />
           <div className="flex justify-between font-semibold text-black text-base">

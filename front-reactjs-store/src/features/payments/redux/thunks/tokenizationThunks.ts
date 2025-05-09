@@ -10,7 +10,7 @@ export const tokenizeCard = createAsyncThunk(
       const result = await tokenizeCardRequest(cardData);
       return result;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response?.data?.message ?? 'Error al tokenizar la tarjeta');
+      return thunkAPI.rejectWithValue(error.response?.data?.error.messages.number[0]?? 'Error al tokenizar la tarjeta');
     }
   }
 );

@@ -39,6 +39,6 @@ export const makePaymentRequest = async (paymentData: PaymentPayload) => {
 };
 
 export const getPaymentStatusRequest = async (transactionId: string) => {
-  const response = await api.get(API_ENDPOINTS.PAYMENTS+`/transaction/${transactionId}/status`);
+  const response = await api.get(API_ENDPOINTS.PAYMENTS+`/status-payment/${transactionId}`);
   return response.data;
 };

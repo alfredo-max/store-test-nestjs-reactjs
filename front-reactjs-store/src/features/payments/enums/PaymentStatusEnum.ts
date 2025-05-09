@@ -3,6 +3,7 @@ export enum PaymentStatusEnum {
     APPROVED = 'APPROVED',
     DECLINED = 'DECLINED',
     VOIDED = 'VOIDED',
-    ERROR = 'ERROR'
+    ERROR = 'ERROR',
+    NO_STATUS = 'NO_STATUS'
   }
   

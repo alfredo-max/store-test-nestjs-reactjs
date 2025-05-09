@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AcceptanceTokens } from '../../../models/AcceptanceTokens';
 import { fetchAcceptanceTokens } from '../../thunks/acceptanceThunks';
 import { tokenizeCard } from '../../thunks/tokenizationThunks';
@@ -20,7 +20,7 @@ const initialState: PaymentState = {
   acceptanceTokens: null,
   cardToken: null,
   transactionId: null,
-  paymentStatus: null,
+  paymentStatus: PaymentStatusEnum.NO_STATUS,
   isLoading: false,
   error: null,
 };
@@ -29,7 +29,17 @@ const paymentSlice = createSlice({
   name: 'payment',
   initialState,
   reducers: {
-    resetPaymentState: () => initialState,
+    resetPaymentState: (state) => {
+      state.acceptanceTokens=null;
+      state.cardToken=null;
+      state.transactionId=null;
+      state.paymentStatus=PaymentStatusEnum.NO_STATUS;
+      state.isLoading=false;
+      state.error=null;
+    },
+    setStatusState: (state, action: PayloadAction<PaymentStatusEnum>) => {
+        state.paymentStatus = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -41,6 +51,7 @@ const paymentSlice = createSlice({
         state.acceptanceTokens = action.payload;
       })
       .addCase(fetchAcceptanceTokens.rejected, (state, action) => {
+        state.paymentStatus=PaymentStatusEnum.ERROR;
         state.error = (action.payload as string) || 'Error al obtener los tokens';
         state.isLoading = false;
       })
@@ -54,6 +65,7 @@ const paymentSlice = createSlice({
         state.cardToken = action.payload;
       })
       .addCase(tokenizeCard.rejected, (state, action) => {
+        state.paymentStatus=PaymentStatusEnum.ERROR;
         state.error = (action.payload as string) || 'Error al tokenizar la tarjeta';
         state.isLoading = false;
       })
@@ -63,14 +75,15 @@ const paymentSlice = createSlice({
         state.error = null;
       })
       .addCase(makePayment.fulfilled, (state, action) => {
-        state.transactionId = action.payload.transactionId;
+        state.transactionId = action.payload;
       })
       .addCase(makePayment.rejected, (state, action) => {
+        state.paymentStatus=PaymentStatusEnum.ERROR;
         state.error = (action.payload as string) || 'Error al realizar el pago';
         state.isLoading = false;
       })
 
-      //Consultar estado de pago
+      //get status transaction
       .addCase(pollPaymentStatus.pending, (state) => {
         state.error = null;
       })
@@ -78,11 +91,12 @@ const paymentSlice = createSlice({
         state.paymentStatus = action.payload;
       })
       .addCase(pollPaymentStatus.rejected, (state, action) => {
+        state.paymentStatus=PaymentStatusEnum.ERROR;
         state.error = (action.payload as string) || 'Error al consultar el estado del pago';
         state.isLoading = false;
       });
   },
 });
 
-export const { resetPaymentState } = paymentSlice.actions;
+export const { resetPaymentState,setStatusState} = paymentSlice.actions;
 export default paymentSlice.reducer;

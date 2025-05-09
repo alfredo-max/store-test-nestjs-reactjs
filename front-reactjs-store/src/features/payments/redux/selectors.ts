@@ -9,7 +9,7 @@ export const selectTransactionId = (state: RootState): string | null => state.pa
 export const selectPaymentStatus = (state: RootState) => state.payment.paymentStatus;
 export const selectPaymentError = (state: RootState): string | null => state.payment.error;
 export const selectIsLoading = (state: RootState): boolean => state.payment.isLoading;
-
+export const selectError = (state: RootState): string | null => state.payment.error;
 // ----------formPayment
 export const selectUser = (state: RootState): UserInfo | null => state.formPayment.userInfo;
 export const selectCard = (state: RootState): CardFormData | null => state.formPayment.cardInfo;

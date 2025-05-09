@@ -5,6 +5,7 @@ import { RiSecurePaymentFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { setUserInfo } from "../redux/slices/slices/formPaymentSlice";
+import { usePayment } from "../hooks/usePayment";
 
 interface Props {
   onContinue: () => void;
@@ -21,14 +22,16 @@ export const UserInfoForm: React.FC<Props> = ({ onContinue, onBack }) => {
   const { register, handleSubmit, setValue, formState: { errors }} = useForm<FormData>();
   const userInfo = useSelector((state: RootState) => state.formPayment.userInfo);
   const dispatch = useDispatch();
-    
+  const { loadAcceptanceTokens } = usePayment();
+  
   useEffect(() => {
-    if (userInfo) {
+    if(userInfo){
       setValue("email", userInfo.email);
       setValue("name", userInfo.name);
       setValue("phone", userInfo.phone);
     }
-  }, [userInfo, setValue]);
+    loadAcceptanceTokens();
+  }, [userInfo,setValue]);
   
   const onSubmit = (data: FormData) => {
     dispatch(setUserInfo(data));

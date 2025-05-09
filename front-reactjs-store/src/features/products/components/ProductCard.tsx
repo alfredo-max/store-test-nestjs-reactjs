@@ -17,15 +17,12 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalStep, setModalStep] = useState(1);
+  const [modalStep, setModalStep] = useState(PaymentStepEnum.USER_INFO);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    setModalStep(PaymentStepEnum.USER_INFO);
-  }, []);
 
   const handlePayClick = () => {
     dispatch(setSelectedProduct(product));
+    setModalStep(PaymentStepEnum.USER_INFO);
     setIsModalOpen(true);
   };
   return (

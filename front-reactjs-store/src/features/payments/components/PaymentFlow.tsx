@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef} from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { usePayment } from '../hooks/usePayment';
 import Transaction from './Tansaction';
-import { PaymentStatusEnum } from '../enums/PaymentStatusEnum';
 import { Product } from '../../products/models/Product';
 import { PaymentPayload } from '../models/PaymentPayload';
+import { PaymentStatusEnum } from '../enums/PaymentStatusEnum';
 
 interface Props {
     onRetry: () => void;
@@ -14,63 +14,60 @@ interface Props {
 const PaymentFlow: React.FC<Props> = ({ onRetry }) => {
     const {
         acceptanceTokens,
-        cardToken,
-        paymentError,
-        transactionId,
-        paymentStatus,
         userForm,
         cardForm,
         tokenizeUserCard,
         initiatePayment,
         startPollPaymentStatus,
-        resetPayment,
+        setStatus,
     } = usePayment();
 
-    const [status, setStatus] = useState<PaymentStatusEnum>(PaymentStatusEnum.PENDING);
     const productSelected: Product | null = useSelector((state: RootState) => state.selectedProductPayment.selectedProduct);
-
+    const hasRunRef = useRef(false);
     useEffect(() => {
+        if (hasRunRef.current) return;
+        hasRunRef.current = true;
+        setStatus(PaymentStatusEnum.PENDING);
         const startTransactionFlow = async () => {
-            if (cardForm && userForm && productSelected) {
-                try {
-                    // Tokenizar la tarjeta
-                    const token = await tokenizeUserCard({
-                        number: cardForm.cardNumber,
-                        cvc: cardForm.cvc,
-                        exp_month: cardForm.expMonth,
-                        exp_year: cardForm.expYear,
-                        card_holder: userForm.name,
-                    }).unwrap();
+            if (!cardForm || !userForm || !productSelected) return;
 
-                    // Iniciar el pago con el token obtenido
-                    debugger
-                    const paymentPayload = createPaymentPayload(productSelected.price,token );
-                    await initiatePayment(paymentPayload);
-                } catch {
-                    handlePaymentError();
-                }
-            } else {
-                handlePaymentError();
+            try {
+                const token = await tokenizeUserCard({
+                    number: cardForm.cardNumber,
+                    cvc: cardForm.cvc,
+                    exp_month: cardForm.expMonth,
+                    exp_year: cardForm.expYear,
+                    card_holder: userForm.name,
+                }).unwrap();
+
+                if (!token) return;
+
+                const paymentPayload = createPaymentPayload(productSelected.price, token);
+                const paymentId = await initiatePayment(paymentPayload).unwrap();
+
+                if (!paymentId) return;
+
+                pollUntilResolvedPayment(paymentId);
+            } catch (error) {
+                console.error("Error en la transacción:", error);
             }
         };
 
         startTransactionFlow();
-    }, []); // Solo se ejecuta una vez
+    }, []);
 
-    useEffect(() => {
-        if (transactionId) {
-            startPollPaymentStatus(transactionId);
+    const pollUntilResolvedPayment = async (paymentId:string) => {
+        let status = PaymentStatusEnum.PENDING;
+        while (status==PaymentStatusEnum.PENDING) {
+            try {
+                status = await startPollPaymentStatus(paymentId).unwrap();
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            } catch (error) {
+                console.error("Error al verificar el estado del pago:", error);
+                break;
+            }
         }
-    }, [transactionId]);
-
-    useEffect(() => {
-        setStatus(PaymentStatusEnum[paymentStatus as keyof typeof PaymentStatusEnum] || PaymentStatusEnum.ERROR);
-    }, [paymentStatus]);
-
-    const handlePaymentError = () => {
-        resetPayment();
-        setStatus(PaymentStatusEnum.ERROR);
-    };
+    }
 
     const createPaymentPayload = (price: number, token: string): PaymentPayload => ({
         acceptanceToken: acceptanceTokens?.presigned_acceptance.acceptance_token || '',
@@ -84,10 +81,10 @@ const PaymentFlow: React.FC<Props> = ({ onRetry }) => {
             installments: Number(cardForm?.installments) || 1,
             token,
         },
-        reference: '',
+        reference: ''
     });
 
-    return <Transaction status={status} onRetry={() => onRetry()} />;
+    return <Transaction onRetry={() => onRetry()} />;
 };
 
 export default PaymentFlow;

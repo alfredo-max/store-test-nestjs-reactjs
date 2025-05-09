@@ -1,9 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { makePaymentRequest } from '../../services/paymentService';
 import { PaymentPayload } from '../../models/PaymentPayload';
-import { IPaymentResponse } from '../../models/PaymentResponse';
 
-export const makePayment = createAsyncThunk<IPaymentResponse, PaymentPayload>(
+export const makePayment = createAsyncThunk<string, PaymentPayload>(
   'payment/makePayment',
   async (payload, thunkAPI) => {
     try {
