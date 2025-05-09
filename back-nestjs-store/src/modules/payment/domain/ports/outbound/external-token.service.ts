@@ -4,4 +4,5 @@ import { PaymentPayload } from "../../model/payment-payload";
 export interface ExternalTokenService {
   getAcceptanceTokens(): Promise<AcceptanceTokens>;
   makePayment(paymentPayload:PaymentPayload):Promise<string>
+  statusPayment(id:string):Promise<string>
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post} from '@nestjs/common';
 import { PaymentService } from 'src/modules/payment/application/services/payment.service';
 import { AcceptanceTokens } from 'src/modules/payment/domain/model/acceptance-tokens';
 import { PaymentPayload } from 'src/modules/payment/domain/model/payment-payload';
@@ -15,5 +15,10 @@ export class PaymentController {
     @Post('make-payment')
     async makePayment(@Body() paymentPayload: PaymentPayload): Promise<string> {
         return await this.paymentService.makePayment(paymentPayload);
+    }
+
+    @Get('status-payment/:id')
+    async statusPayment(@Param('id') id: string): Promise<string> {
+        return await this.paymentService.statusPayment(id);
     }
 }

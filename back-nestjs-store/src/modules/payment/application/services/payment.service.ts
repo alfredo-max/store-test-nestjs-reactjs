@@ -3,6 +3,7 @@ import { GetAcceptanceTokensUseCase } from '../../domain/ports/inbound/get-accep
 import { AcceptanceTokens } from '../../domain/model/acceptance-tokens';
 import { PaymentPayload } from '../../domain/model/payment-payload';
 import { MakePaymentUseCase } from '../../domain/ports/inbound/make-payment.use-case';
+import { StatusTransactionUseCase } from '../../domain/ports/inbound/status-transaction.use-case';
 
 @Injectable()
 export class PaymentService {
@@ -12,6 +13,8 @@ export class PaymentService {
         private readonly getAcceptanceTokensUseCase: GetAcceptanceTokensUseCase,
         @Inject('MakePaymentUseCase')
         private readonly makePaymentUseCase: MakePaymentUseCase,
+        @Inject('StatusTransactionUseCase')
+        private readonly statusTransactionUseCase: StatusTransactionUseCase,
     ) {}
 
     async getAcceptanceTokens(): Promise<AcceptanceTokens> {
@@ -21,6 +24,11 @@ export class PaymentService {
     async makePayment(paymentPayload:PaymentPayload): Promise<string> {
         return this.makePaymentUseCase.execute(paymentPayload);
     }
+
+    async statusPayment(id: string): Promise<string>{
+        return this.statusTransactionUseCase.execute(id);
+    }
+
 }
 
 

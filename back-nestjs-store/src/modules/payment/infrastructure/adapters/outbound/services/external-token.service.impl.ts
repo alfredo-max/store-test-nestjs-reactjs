@@ -76,4 +76,22 @@ export class ExternalTokenServiceImpl implements ExternalTokenService {
     return response.data.data.id;
   }
 
+  async statusPayment(id: string): Promise<string> {
+    const prvKey = this.configService.get<string>('PRV_KEY');
+
+    const response = await firstValueFrom(
+      this.httpService.get(
+        `https://api-sandbox.co.uat.wompi.dev/v1/transactions/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${prvKey}`,
+          },
+        }
+      ),
+    );
+
+    return response.data.data.status
+  }
+
+
 }
