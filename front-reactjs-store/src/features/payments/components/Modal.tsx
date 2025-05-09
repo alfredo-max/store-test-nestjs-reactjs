@@ -9,12 +9,12 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
-  const {isPaying} = usePayment()
+  const { isPaying } = usePayment()
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-white bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 space-y-4">
+    <div className="fixed inset-0 z-50 bg-white bg-opacity-50 flex items-center justify-center px-4">
+      <div className="bg-white rounded-xl shadow-2xl border border-gray-200 max-w-md w-full p-6 space-y-4">
         {title && <h2 className="text-xl font-semibold">{title}</h2>}
         <div>{children}</div>
         {!isPaying && (

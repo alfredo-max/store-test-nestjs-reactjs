@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
 import { FaCcVisa, FaCcMastercard, FaArrowLeft } from "react-icons/fa";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCardInfo } from "../redux/slices/slices/formPaymentSlice";
 import { CardFormData } from "../models/CardFormData";
 import { usePayment } from "../hooks/usePayment";
+import { useEffect } from "react";
+import { RootState } from "../../../app/store";
 
 interface Props {
   onBack: () => void;
@@ -14,11 +16,13 @@ interface Props {
 const CardPaymentForm: React.FC<Props> = ({ onBack, onContinue }) => {
   const dispatch = useDispatch();
   const { acceptanceTokens } = usePayment();
+  const cardInfo = useSelector((state: RootState) => state.formPayment.cardInfo);
   const link_presigned_acceptance = acceptanceTokens?.presigned_acceptance.permalink
   const link_presigned_personal_data_auth = acceptanceTokens?.presigned_personal_data_auth.permalink
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<CardFormData>();
 
@@ -27,11 +31,26 @@ const CardPaymentForm: React.FC<Props> = ({ onBack, onContinue }) => {
     onContinue();
   };
 
+  useEffect(() => {
+    if (cardInfo) {
+      setValue("cardNumber", cardInfo.cardNumber);
+      setValue("expMonth", cardInfo.expMonth);
+      setValue("expYear", cardInfo.expYear);
+      setValue("cvc", cardInfo.cvc);
+      setValue("nameOnCard", cardInfo.nameOnCard);
+      setValue("idType", cardInfo.idType);
+      setValue("idNumber", cardInfo.idNumber);
+      setValue("installments", cardInfo.installments);
+      setValue("acceptedTerms", cardInfo.acceptedTerms);
+      setValue("acceptedDataPolicy", cardInfo.acceptedDataPolicy);
+    }
+  }, [setValue]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-sm text-gray-800">
       <div className="flex items-center gap-2">
         <FaArrowLeft className="text-yellow-400 cursor-pointer" onClick={onBack} />
-        <span className="text-black">💳</span> Paga con tu tarjeta
+        <h2 className="text-lg font-semibold text-black">💳 Paga con tarjeta</h2>
       </div>
 
       <div>
@@ -45,14 +64,24 @@ const CardPaymentForm: React.FC<Props> = ({ onBack, onContinue }) => {
       <div>
         <label className="block mb-1 text-gray-600">Número de la tarjeta</label>
         <input
+          inputMode="numeric"
           type="text"
+          placeholder="•••• •••• •••• ••••"
           {...register("cardNumber", {
             required: "El número es obligatorio",
-            minLength: { value: 16, message: "Debe tener al menos 16 dígitos" },
-            maxLength: { value: 19, message: "Máximo 19 dígitos" },
-            pattern: { value: /^\d+$/, message: "Solo se permiten números" },
+            minLength: { value: 19, message: "Debe tener 16 dígitos" },
+            maxLength: { value: 19, message: "Debe tener 16 dígitos" },
+            pattern: {
+              value: /^(\d{4} ){3}\d{4}$/,
+              message: "Formato inválido. Usa 16 dígitos (ej. 1234 5678 9012 3456)",
+            },
           })}
-          placeholder="•••• •••• •••• ••••"
+          onInput={(e) => {
+            const input = e.target as HTMLInputElement;
+            const digits = input.value.replace(/\D/g, '').substring(0, 16);
+            const formatted = digits.replace(/(.{4})/g, '$1 ').trim();
+            input.value = formatted;
+          }}
           className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
         />
         {errors.cardNumber && <p className="text-red-500 text-xs mt-1">{errors.cardNumber.message}</p>}
@@ -79,9 +108,9 @@ const CardPaymentForm: React.FC<Props> = ({ onBack, onContinue }) => {
             >
               <option value="">Año</option>
               {[...Array(10)].map((_, i) => {
-              const year = new Date().getFullYear() + i;
-              const yearShort = year.toString().slice(-2);
-              return <option key={i} value={yearShort}>{yearShort}</option>;
+                const year = new Date().getFullYear() + i;
+                const yearShort = year.toString().slice(-2);
+                return <option key={i} value={yearShort}>{yearShort}</option>;
               })}
             </select>
           </div>
@@ -95,7 +124,16 @@ const CardPaymentForm: React.FC<Props> = ({ onBack, onContinue }) => {
           </label>
           <input
             type="text"
-            {...register("cvc", { required: "El CVC es obligatorio" })}
+            inputMode="numeric"
+            pattern="[0-9]*"
+            maxLength={4}
+            {...register("cvc", {
+              required: "El CVC es obligatorio",
+              pattern: {
+                value: /^\d{3,4}$/,
+                message: "Debe tener 3 o 4 dígitos numéricos",
+              },
+            })}
             placeholder="123"
             className="w-full px-4 py-2 border border-gray-300 rounded focus:ring-yellow-400 focus:outline-none"
           />

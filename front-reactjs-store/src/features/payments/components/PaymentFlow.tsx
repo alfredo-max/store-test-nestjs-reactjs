@@ -9,9 +9,10 @@ import { PaymentStatusEnum } from '../enums/PaymentStatusEnum';
 
 interface Props {
     onRetry: () => void;
+    onBack:()=>void;
 }
 
-const PaymentFlow: React.FC<Props> = ({ onRetry }) => {
+const PaymentFlow: React.FC<Props> = ({ onRetry,onBack }) => {
     const {
         acceptanceTokens,
         userForm,
@@ -33,7 +34,7 @@ const PaymentFlow: React.FC<Props> = ({ onRetry }) => {
 
             try {
                 const token = await tokenizeUserCard({
-                    number: cardForm.cardNumber,
+                    number: cardForm.cardNumber.replace(/\s/g, ''),
                     cvc: cardForm.cvc,
                     exp_month: cardForm.expMonth,
                     exp_year: cardForm.expYear,
@@ -84,7 +85,7 @@ const PaymentFlow: React.FC<Props> = ({ onRetry }) => {
         reference: ''
     });
 
-    return <Transaction onRetry={() => onRetry()} />;
+    return <Transaction onRetry={() => onRetry()} onBack={() =>onBack()} />;
 };
 
 export default PaymentFlow;

@@ -1,12 +1,18 @@
 import { FaExclamationCircle } from "react-icons/fa";
 import { PaymentStatusEnum } from "../enums/PaymentStatusEnum";
 import { usePayment } from "../hooks/usePayment";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
+import { Product } from "../../products/models/Product";
 
 interface TransactionProps {
   onRetry: () => void;
+  onBack: () => void;
 }
 
-const Transaction: React.FC<TransactionProps> = ({ onRetry }) => {
+const Transaction: React.FC<TransactionProps> = ({ onRetry, onBack }) => {
+  const cardInfo = useSelector((state: RootState) => state.formPayment.cardInfo);
+  const productSelected: Product | null = useSelector((state: RootState) => state.selectedProductPayment.selectedProduct);
 
   const { paymentStatus, error } = usePayment();
 
@@ -25,18 +31,50 @@ const Transaction: React.FC<TransactionProps> = ({ onRetry }) => {
     switch (paymentStatus) {
       case PaymentStatusEnum.PENDING:
         return (
-          <div>
+          <div className="flex flex-col items-center justify-center space-y-4">
             <div className="w-10 h-10 border-4 border-blue-300 border-t-blue-600 rounded-full animate-spin"></div>
-            <div className={`font-semibold text-lg ${getColor()}`}>
+            <div className={`font-semibold text-lg text-center ${getColor()}`}>
               Procesando...
             </div>
           </div>
         );
-
       case PaymentStatusEnum.APPROVED:
         return (
-          <div className={`font-semibold text-lg ${getColor()}`}>
-            ¡Pago completado con éxito!
+          <div className="max-w-md mx-auto p-4 bg-white shadow rounded-md text-sm text-gray-800 space-y-4">
+            <div className={`text-center font-semibold text-lg ${getColor()}`}>
+              ¡Pago exitoso!
+            </div>
+
+            <div className="flex justify-between">
+              <span className="font-medium">Producto:</span>
+              <span>{productSelected?.title}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="font-medium">Total pagado:</span>
+              <span>${productSelected?.price}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="font-medium">Tarjeta:</span>
+              <span>**** {cardInfo?.cardNumber.slice(-4)}</span>
+            </div>
+
+            {cardInfo?.installments !== "1" && (
+              <div className="flex justify-between">
+                <span className="font-medium">Cuotas:</span>
+                <span>{cardInfo?.installments} meses</span>
+              </div>
+            )}
+
+            <div className="text-center">
+              <button
+                onClick={onBack}
+                className="mt-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded transition"
+              >
+                Volver
+              </button>
+            </div>
           </div>
         );
 
