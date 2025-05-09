@@ -7,6 +7,8 @@ export interface PaymentPayload {
     customerEmail:string;
     paymentMethod:PaymentMethod;
     reference:string;
+    exp_month:string;
+    exp_year:string;
   }
 
 interface PaymentMethod {

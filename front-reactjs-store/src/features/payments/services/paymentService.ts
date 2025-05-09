@@ -2,6 +2,7 @@ import axios from 'axios';
 import { AcceptanceTokens } from '../models/AcceptanceTokens';
 import { API_ENDPOINTS } from '../../../shared/api/endpoints';
 import api from '../../../shared/api/api';
+import { PaymentPayload } from '../models/PaymentPayload';
 
 
 const PAYMENT_API = 'https://api-sandbox.co.uat.wompi.dev/v1';
@@ -32,8 +33,8 @@ export const getAcceptanceTokenRequest = async (): Promise<AcceptanceTokens> => 
   return response.data;
 };
 
-export const makePaymentRequest = async (paymentData: any) => {
-  const response = await api.post(API_ENDPOINTS.PAYMENTS+'/transaction', paymentData);
+export const makePaymentRequest = async (paymentData: PaymentPayload) => {
+  const response = await api.post(API_ENDPOINTS.PAYMENTS+'/make-payment', paymentData);
   return response.data;
 };
 

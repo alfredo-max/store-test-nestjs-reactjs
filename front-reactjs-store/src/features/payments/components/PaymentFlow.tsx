@@ -1,23 +1,21 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
 import { usePayment } from '../hooks/usePayment';
 import Transaction from './Tansaction';
 import { PaymentStatusEnum } from '../enums/PaymentStatusEnum';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../app/store';
 import { Product } from '../../products/models/Product';
 import { PaymentPayload } from '../models/PaymentPayload';
-
 
 interface Props {
     onRetry: () => void;
 }
 
-const PaymentFlow : React.FC<Props> = ({onRetry}) => {
-    
+const PaymentFlow: React.FC<Props> = ({ onRetry }) => {
     const {
         acceptanceTokens,
-        paymentError,
         cardToken,
+        paymentError,
         transactionId,
         paymentStatus,
         userForm,
@@ -29,52 +27,35 @@ const PaymentFlow : React.FC<Props> = ({onRetry}) => {
     } = usePayment();
 
     const [status, setStatus] = useState<PaymentStatusEnum>(PaymentStatusEnum.PENDING);
+    const productSelected: Product | null = useSelector((state: RootState) => state.selectedProductPayment.selectedProduct);
 
     useEffect(() => {
         const startTransactionFlow = async () => {
-            if (cardForm != null && userForm !=null) {
+            if (cardForm && userForm && productSelected) {
                 try {
-                    await tokenizeUserCard(
-                        {
-                            number: cardForm.cardNumber,
-                            cvc: cardForm.cvc,
-                            exp_month: cardForm.expMonth,
-                            exp_year: cardForm.expYear,
-                            card_holder: userForm.name,
-                        }
-                    );
+                    // Tokenizar la tarjeta
+                    const token = await tokenizeUserCard({
+                        number: cardForm.cardNumber,
+                        cvc: cardForm.cvc,
+                        exp_month: cardForm.expMonth,
+                        exp_year: cardForm.expYear,
+                        card_holder: userForm.name,
+                    }).unwrap();
+
+                    // Iniciar el pago con el token obtenido
+                    debugger
+                    const paymentPayload = createPaymentPayload(productSelected.price,token );
+                    await initiatePayment(paymentPayload);
                 } catch {
                     handlePaymentError();
-                } finally{
-                    if(paymentError!=null){
-                        handlePaymentError()
-                    }
                 }
+            } else {
+                handlePaymentError();
             }
         };
 
         startTransactionFlow();
-    }, []);
-
-    useEffect(() => {
-        const runPayment = async () => {
-            if (cardToken) {
-                try {
-                    const productSelected:Product | null = useSelector((state: RootState) => state.selectedProductPayment.selectedProduct);
-                    if (productSelected && cardForm && userForm) {
-                        const paymentPayload = createPaymentPayload(productSelected.price);
-                        await initiatePayment(paymentPayload);
-                    } else {
-                        handlePaymentError();
-                    }
-                } catch {
-                    handlePaymentError();
-                }
-            }
-        };
-
-        runPayment();
-    }, [cardToken]);
+    }, []); // Solo se ejecuta una vez
 
     useEffect(() => {
         if (transactionId) {
@@ -91,19 +72,19 @@ const PaymentFlow : React.FC<Props> = ({onRetry}) => {
         setStatus(PaymentStatusEnum.ERROR);
     };
 
-    const createPaymentPayload = (price:number): PaymentPayload => ({
+    const createPaymentPayload = (price: number, token: string): PaymentPayload => ({
         acceptanceToken: acceptanceTokens?.presigned_acceptance.acceptance_token || '',
         acceptPersonalAuth: acceptanceTokens?.presigned_personal_data_auth.acceptance_token || '',
         amountInCents: price,
         currency: 'COP',
         signature: '',
-        customerEmail: userForm?.email || "",
+        customerEmail: userForm?.email || '',
         paymentMethod: {
             type: 'CARD',
             installments: Number(cardForm?.installments) || 1,
-            token: cardToken || "",
+            token,
         },
-        reference:"",
+        reference: '',
     });
 
     return <Transaction status={status} onRetry={() => onRetry()} />;

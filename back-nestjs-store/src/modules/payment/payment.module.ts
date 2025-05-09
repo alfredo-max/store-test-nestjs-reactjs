@@ -6,6 +6,7 @@ import { ExternalTokenServiceImpl } from './infrastructure/adapters/outbound/ser
 import { ConfigModule } from '@nestjs/config';
 import { PaymentController } from './infrastructure/adapters/inbound/rest/payment.controller';
 import { PaymentService } from './application/services/payment.service';
+import { MakePaymentUseCaseImpl } from './application/usecases/make-payment.use-case-impl';
 
 @Module({
   imports: [HttpModule,ConfigModule],
@@ -15,6 +16,10 @@ import { PaymentService } from './application/services/payment.service';
     {
       provide: 'GetAcceptanceTokensUseCase',
       useClass: GetAcceptanceTokensUseCaseImpl,
+    },
+    {
+      provide: 'MakePaymentUseCase',
+      useClass: MakePaymentUseCaseImpl,
     },
     {
       provide: 'ExternalTokenService',
