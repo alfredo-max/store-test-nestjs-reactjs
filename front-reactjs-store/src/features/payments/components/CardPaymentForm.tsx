@@ -79,8 +79,9 @@ const CardPaymentForm: React.FC<Props> = ({ onBack, onContinue }) => {
             >
               <option value="">Año</option>
               {[...Array(10)].map((_, i) => {
-                const year = new Date().getFullYear() + i;
-                return <option key={i} value={year}>{year}</option>;
+              const year = new Date().getFullYear() + i;
+              const yearShort = year.toString().slice(-2);
+              return <option key={i} value={yearShort}>{yearShort}</option>;
               })}
             </select>
           </div>

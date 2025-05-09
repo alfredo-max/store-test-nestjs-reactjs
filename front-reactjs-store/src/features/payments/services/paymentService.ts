@@ -23,7 +23,7 @@ export const tokenizeCardRequest = async (cardData: {
       },
     }
   );
-  return response.data;
+  return response.data.data.id;
 };
 
 

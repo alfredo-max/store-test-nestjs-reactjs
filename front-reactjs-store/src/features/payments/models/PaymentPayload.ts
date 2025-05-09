@@ -1,7 +1,16 @@
 export interface PaymentPayload {
-    cardToken: string;
-    amount: number;
-    currency: string;
-    acceptanceToken: string;
-    userEmail: string;
+    acceptanceToken:string;
+    acceptPersonalAuth:string;
+    amountInCents:number;
+    currency:string;
+    signature:string;
+    customerEmail:string;
+    paymentMethod:PaymentMethod;
+    reference:string;
   }
+
+interface PaymentMethod {
+    type:string;
+    installments:number;
+    token:string;
+}

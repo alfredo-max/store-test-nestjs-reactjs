@@ -7,7 +7,7 @@ export const makePayment = createAsyncThunk<IPaymentResponse, PaymentPayload>(
   'payment/makePayment',
   async (payload, thunkAPI) => {
     try {
-      const result = await makePaymentRequest(payload); // usa el servicio
+      const result = await makePaymentRequest(payload);
       return result;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response?.data?.message ?? 'Error al procesar el pago');
