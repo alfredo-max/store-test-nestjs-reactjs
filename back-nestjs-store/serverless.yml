@@ -19,6 +19,9 @@ provider:
     NODE_ENV: ${env:NODE_ENV}
     DB_SSL: ${env:DB_SSL}
     CORS_ORIGIN: ${env:CORS_ORIGIN}
+    PUB_KEY: ${env:PUB_KEY}
+    PRV_KEY: ${env:PRV_KEY}
+    INTEGRITY_KEY: ${env:INTEGRITY_KEY}
   iamRoleStatements:
     - Effect: Allow
       Action:
