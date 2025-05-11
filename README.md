@@ -103,10 +103,8 @@ npm install
 
 ```bash
 # Desarrollo
-npm run start:dev
+npm start
 
-# Producción
-npm run start:prod
 ```
 
 ### Frontend
@@ -125,9 +123,6 @@ Abre [http://localhost:5173](http://localhost:5173) en tu navegador.
 # Unit tests
 npm run test
 
-# E2E tests
-npm run test:e2e
-
 # Cobertura
 npm run test:cov
 ```
@@ -143,10 +138,6 @@ npm run test
 ### Backend
 
 Usa Serverless Framework para desplegar en AWS Lambda u otro proveedor compatible:
-
-```bash
-npm run deploy
-```
 
 ### Frontend
 
