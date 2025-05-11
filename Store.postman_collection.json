@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "123408f8-3888-4e38-b21d-53b1a8dbb731",
+		"name": "Store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18853003"
+	},
+	"item": [
+		{
+			"name": "get all products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/productos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener tokens de aceptacion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/payments/acceptance-tokens",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"payments",
+						"acceptance-tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener estado transaction",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/payments/status-payment/15113-1746765346-19966",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"payments",
+						"status-payment",
+						"15113-1746765346-19966"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Realizar transaction",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"acceptanceToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJjb250cmFjdF9pZCI6MjQzLCJwZXJtYWxpbmsiOiJodHRwczovL3dvbXBpLmNvbS9hc3NldHMvZG93bmxvYWRibGUvcmVnbGFtZW50by1Vc3Vhcmlvcy1Db2xvbWJpYS5wZGYiLCJmaWxlX2hhc2giOiJkMWVkMDI3NjhlNDEzZWEyMzFmNzAwMjc0N2Y0N2FhOSIsImppdCI6IjE3NDY3NjUzMTYtNzU1MTQiLCJlbWFpbCI6IiIsImV4cCI6MTc0Njc2ODkxNn0.V2IGtA9h47-W0YrVEZn5NW3hN0Uy7tZN_5YSkc-hpms\",\r\n    \"acceptPersonalAuth\": \"eyJhbGciOiJIUzI1NiJ9.eyJjb250cmFjdF9pZCI6Mzc1LCJwZXJtYWxpbmsiOiJodHRwczovL3dvbXBpLmNvbS9hc3NldHMvZG93bmxvYWRibGUvYXV0b3JpemFjaW9uLWFkbWluaXN0cmFjaW9uLWRhdG9zLXBlcnNvbmFsZXMucGRmIiwiZmlsZV9oYXNoIjoiOTVkYzcwN2M0M2UxYmViMDAwMDUyZDNkNWJhZThhMDAiLCJqaXQiOiIxNzQ2NzY1MzE2LTU4MDkwIiwiZW1haWwiOiIifQ.68cqz8xuG7X6Yc0r8IxSz7uD9Smu9bo3pe6uJvC0cyc\",\r\n    \"amountInCents\": 300000,\r\n    \"currency\": \"COP\",\r\n    \"signature\": \"\",\r\n    \"customerEmail\": \"mockuser@example.com\",\r\n    \"paymentMethod\": {\r\n        \"type\": \"CARD\",\r\n        \"installments\": 1,\r\n        \"token\": \"tok_stagtest_5113_af370ea5cb51997199b1742B592D19f4\"\r\n    },\r\n    \"reference\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/payments/make-payment",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"payments",
+						"make-payment"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
