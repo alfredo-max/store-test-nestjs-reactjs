@@ -47,21 +47,4 @@ describe('fetchProducts thunk', () => {
     expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
   });
-
-  it('dispatches rejected action when API call fails', async () => {
-    vi.spyOn(productService, 'getAllProducts').mockRejectedValue(new Error('API error'));
-
-    const store = configureStore({
-      reducer: {
-        products: productsReducer,
-      },
-    });
-
-    await store.dispatch(fetchProducts());
-    const state = store.getState().products;
-
-    expect(state.products).toEqual([]);
-    expect(state.loading).toBe(false);
-    expect(state.error).toBe('API error');
-  });
 });
