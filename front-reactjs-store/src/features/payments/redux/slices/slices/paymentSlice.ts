@@ -6,7 +6,6 @@ import { makePayment } from '../../thunks/transactionThunks';
 import { pollPaymentStatus } from '../../thunks/pollingThunks';
 import { PaymentStatusEnum } from '../../../enums/PaymentStatusEnum';
 
-
 interface PaymentState {
   acceptanceTokens: AcceptanceTokens | null;
   cardToken: string | null;

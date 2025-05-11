@@ -20,7 +20,7 @@ const SummaryPaymentComponent: React.FC<Props> = ({ onBack,onContinue}) => {
   return (
       <div className="space-y-6 text-sm text-gray-800">
         <div className="flex items-center gap-2">
-          <FaArrowLeft className="text-yellow-400 cursor-pointer" onClick={onBack} />
+          <FaArrowLeft data-testid="back-arrow" className="text-yellow-400 cursor-pointer" onClick={onBack} />
           <h2 className="text-lg font-semibold text-black">Resumen de tu pago</h2>
         </div>
 

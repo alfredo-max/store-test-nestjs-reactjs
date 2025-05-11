@@ -17,7 +17,11 @@ export class CardTokenService {
     exp_year: string;
     card_holder: string;
   }) {
-    const response = await this.wompiApi.post('/tokens/cards', cardData);
-    return response.data;
+    try {
+      const response = await this.wompiApi.post('/tokens/cards', cardData);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error?.message || 'Error al crear token');
+    }
   }
 }
