@@ -25,7 +25,9 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - logs:*
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
       Resource: "*"
 
 custom:
@@ -39,10 +41,18 @@ functions:
       - http:
           path: /{proxy+}
           method: any
-          cors: true
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+            allowCredentials: false
     vpc:
       securityGroupIds:
-        - sg-0138114ce5d82548a
+        - sg-094a748d594dcadc9
       subnetIds:
-        - subnet-00096191a1339e66f
-        - subnet-0641d2db0df108262
+        - subnet-0fa0a61c68222af6e
+        - subnet-0d33a0f1301bb7399
