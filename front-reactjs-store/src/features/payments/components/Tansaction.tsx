@@ -28,6 +28,7 @@ const Transaction: React.FC<TransactionProps> = ({ onRetry, onBack }) => {
   };
 
   const renderPaymentStatus = () => {
+    console.log('paymentStatus es:', paymentStatus);
     switch (paymentStatus) {
       case PaymentStatusEnum.PENDING:
         return (
