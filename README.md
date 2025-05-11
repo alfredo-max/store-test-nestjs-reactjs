@@ -44,32 +44,31 @@ A continuación se muestra la estructura principal del proyecto, destacando la s
 
 store-test-nestjs-reactjs/
 │
-├── back-nestjs-store/                  # Backend (NestJS, Arquitectura Hexagonal + DDD)
-│   ├── src/
-│   │   ├── modules/
-│   │   │   ├── product/                # Dominio de productos
-│   │   │   │   ├── application/        # Casos de uso, servicios de aplicación
-│   │   │   │   ├── domain/             # Entidades, repositorios, lógica de dominio
-│   │   │   │   └── infra/              # Adaptadores: persistencia, API, etc.
-│   │   │   └── payment/                # Dominio de pagos
-│   │   │       ├── application/
-│   │   │       ├── domain/
-│   │   │       └── infra/
-│   │   └── main.ts                     # Punto de entrada principal
-│   ├── test/                           # Pruebas unitarias y de integración (e2e)
-│   ├── package.json                    # Dependencias y scripts del backend
-│   └── ...
+├── back-nestjs-store/ # Backend (NestJS, Arquitectura Hexagonal + DDD)
+│ ├── src/
+│ │ ├── modules/
+│ │ │ ├── product/ # Dominio de productos
+│ │ │ │ ├── application/ # Casos de uso, servicios de aplicación
+│ │ │ │ ├── domain/ # Entidades, repositorios, lógica de dominio
+│ │ │ │ └── infra/ # Adaptadores: persistencia, API, etc.
+│ │ │ └── payment/ # Dominio de pagos
+│ │ │ ├── application/
+│ │ │ ├── domain/
+│ │ │ └── infra/
+│ │ └── main.ts # Punto de entrada principal
+│ ├── test/ # Pruebas unitarias y de integración (e2e)
+│ ├── package.json # Dependencias y scripts del backend
+│ └── ...
 │
-└── front-reactjs-store/               # Frontend (React + Vite)
-    ├── src/
-    │   ├── features/
-    │   │   ├── products/               # Componentes, redux y servicios de productos
-    │   │   └── payments/               # Componentes, redux y servicios de pagos
-    │   └── main.tsx                    # Punto de entrada principal
-    ├── public/                         # Archivos estáticos públicos
-    ├── package.json                    # Dependencias y scripts del frontend
-    └── ...
-
+└── front-reactjs-store/ # Frontend (React + Vite)
+├── src/
+│ ├── features/
+│ │ ├── products/ # Componentes, redux y servicios de productos
+│ │ └── payments/ # Componentes, redux y servicios de pagos
+│ └── main.tsx # Punto de entrada principal
+├── public/ # Archivos estáticos públicos
+├── package.json # Dependencias y scripts del frontend
+└── ...
 
 > **Nota:** La estructura sigue los principios de arquitectura limpia, donde cada dominio tiene separadas sus capas de aplicación, dominio e infraestructura para facilitar el mantenimiento y escalabilidad.
 
